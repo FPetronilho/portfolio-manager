@@ -1,6 +1,6 @@
 package com.portfolio.portfolio_manager.exception;
 
-import com.portfolio.portfolio_manager.mapper.ExceptionMapperEntryPoint;
+import com.portfolio.portfolio_manager.mapper.ExceptionMapperEntryPointRest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class RestExceptionHandler {
 
-    private final ExceptionMapperEntryPoint mapper;
+    private final ExceptionMapperEntryPointRest mapper;
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ExceptionDto> handleBusinessException(BusinessException e) {

@@ -6,7 +6,6 @@ import com.portfolio.portfolio_manager.dto.AssetCreate;
 import com.portfolio.portfolio_manager.dto.DigitalUserCreate;
 import com.portfolio.portfolio_manager.usecases.ListAssetsUseCase;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface PortfolioManagerDataProvider {
