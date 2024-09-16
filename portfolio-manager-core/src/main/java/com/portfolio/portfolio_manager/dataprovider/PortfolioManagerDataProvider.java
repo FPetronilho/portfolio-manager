@@ -4,11 +4,12 @@ import com.portfolio.portfolio_manager.domain.Asset;
 import com.portfolio.portfolio_manager.domain.DigitalUser;
 import com.portfolio.portfolio_manager.dto.AssetCreate;
 import com.portfolio.portfolio_manager.dto.DigitalUserCreate;
+import com.portfolio.portfolio_manager.usecases.ListAssetsUseCase;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface DigitalUserDataProvider {
+public interface PortfolioManagerDataProvider {
 
     DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate);
 
@@ -16,14 +17,7 @@ public interface DigitalUserDataProvider {
 
     Asset createAsset(String digitalUserId, AssetCreate assetCreate);
 
-    List<Asset> listAssets(
-            Integer offset,
-            Integer limit,
-            String sourceSystem, // e.g. expense-tracker
-            String type, // e.g. expense, expenseCategory
-            String digitalUserId,
-            LocalDate createdAtGte
-    );
+    List<Asset> listAssets(ListAssetsUseCase.Input input);
 
     void deleteAsset(String digitalUserId, String assetId);
 }
