@@ -25,21 +25,16 @@ public class Constants {
 
 
     // Regex
-    public static final String EXPENSE_DESCRIPTION_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,100}";
-    public static final String CATEGORY_DESCRIPTION_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,100}";
-    public static final String CATEGORY_NAME_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,30}";
+    public static final String SOURCE_SYSTEM_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,30}";
+    public static final String Type_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,30}";
     public static final String ID_REGEX = "[a-fA-F\\d\\-]{36}";
 
 
     // Fields validation
-    public static final String EXPENSE_AMOUNT_INVALID_MSG = "'amount' must be positive.";
-    public static final String EXPENSE_AMOUNT_GTE_INVALID_MSG = "'amountGte' must be positive.";
-    public static final String EXPENSE_AMOUNT_LTE_INVALID_MSG = "'amountLte' must be positive.";
-    public static final String EXPENSE_DESCRIPTION_INVALID_MSG = "'description' must match: " + EXPENSE_DESCRIPTION_REGEX + ".";
-    public static final String EXPENSE_ID_INVALID_MSG = "'id' must match: " + ID_REGEX + ".";
-    public static final String EXPENSE_CATEGORY_VALIDATOR_MSG = "Either 'expenseCategoryName' or new 'ExpenseCategory' must be provided.";
+    public static final String ID_INVALID_MSG = "'id' must match: " + ID_REGEX + ".";
     public static final String OFFSET_INVALID_MSG = "'offset' must be positive";
     public static final String LIMIT_INVALID_MSG = "'limit' must be in the range [" + MIN_LIMIT + ", " + MAX_LIMIT + "]";
-    public static final String CATEGORY_NAME_INVALID_MSG = "'name' must match: " + CATEGORY_NAME_REGEX + ".";
-    public static final String CATEGORY_DESCRIPTION_INVALID_MSG = "'description' must match: " + CATEGORY_DESCRIPTION_REGEX + ".";
+    public static final String SOURCE_SYSTEM_INVALID_MSG = "'sourceSystem' must match: " + SOURCE_SYSTEM_REGEX + ".";
+    public static final String TYPE_INVALID_MSG = "'type' must match: " + Type_REGEX + ".";
+    public static final String DIGITAL_USER_ID_INVALID_MSG = "'digitalUserId' must match: " + ID_REGEX + ".";
 }

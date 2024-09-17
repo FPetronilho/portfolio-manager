@@ -14,7 +14,7 @@ public class CreateAssetUseCase {
 
     public Output execute(Input input) {
         AssetCreate assetCreate = input.getAssetCreate();
-        Asset asset = dataProvider.createAsset(input.getDigitalUserId(), assetCreate);
+        Asset asset = dataProvider.createAsset(input.getSub(), assetCreate);
 
         return Output.builder()
                 .asset(asset)
@@ -26,8 +26,8 @@ public class CreateAssetUseCase {
     @Data
     @Builder
     public static class Input {
-        private String digitalUserId;
         private AssetCreate assetCreate;
+        private String sub;
     }
 
     @NoArgsConstructor

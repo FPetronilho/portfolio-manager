@@ -29,9 +29,9 @@ public class ListAssetsUseCase {
     public static class Input {
         private Integer offset;
         private Integer limit;
+        private String sub;
         private String sourceSystem;
         private String type;
-        private String digitalUserId;
         private LocalDate createdAtGte;
     }
 
