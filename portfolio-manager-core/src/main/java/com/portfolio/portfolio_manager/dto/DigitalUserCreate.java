@@ -19,6 +19,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DigitalUserCreate {
 
+    // TODO: To implement validation it will be necessary to fully replicate the domain and validate each field.
+
     @NotNull(message = Constants.USER_IDP_INFO_MANDATORY_MSG)
     private DigitalUser.IdentityProviderInformation idPInfo;
 
@@ -27,7 +29,4 @@ public class DigitalUserCreate {
 
     @NotNull(message = Constants.USER_CONTACT_MEDIUM_MANDATORY_MSG)
     private List<DigitalUser.ContactMedium> contactMediumList;
-
-    @NotNull(message = Constants.USER_ASSETS_MANDATORY_MSG)
-    private List<Asset> assets;
 }

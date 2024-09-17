@@ -39,6 +39,15 @@ public class DigitalUserController implements DigitalUserRestApi {
     }
 
     @Override
+    public ResponseEntity<DigitalUser> getBySubAndIdP(
+            String sub,
+            DigitalUser.IdentityProviderInformation.IdentityProvider idP
+    ) {
+
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @Override
     public ResponseEntity<Void> delete(String id) {
         log.info("Deleting digital user: {}.", id);
         DeleteDigitalUserUseCase.Input input = DeleteDigitalUserUseCase.Input.builder()

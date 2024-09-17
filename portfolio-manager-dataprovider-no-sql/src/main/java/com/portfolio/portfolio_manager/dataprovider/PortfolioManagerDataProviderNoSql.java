@@ -38,7 +38,7 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public void deleteAsset(String digitalUserId, String assetId) {
+    public void deleteAsset(String assetId) {
 
     }
 }

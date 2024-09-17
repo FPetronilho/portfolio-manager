@@ -18,5 +18,5 @@ public interface PortfolioManagerDataProvider {
 
     List<Asset> listAssets(ListAssetsUseCase.Input input);
 
-    void deleteAsset(String digitalUserId, String assetId);
+    void deleteAsset(String assetId);
 }

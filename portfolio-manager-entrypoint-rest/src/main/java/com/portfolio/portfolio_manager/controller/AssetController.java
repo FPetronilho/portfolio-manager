@@ -42,8 +42,10 @@ public class AssetController implements AssetRestApi {
     public ResponseEntity<List<Asset>> list(
             Integer offset,
             Integer limit,
-            String sub,
-            String sourceSystem,
+            String digitalUserId,
+            String ids,
+            String groupId,
+            String artifactId,
             String type,
             LocalDate createdAtGte
     ) {
@@ -51,8 +53,10 @@ public class AssetController implements AssetRestApi {
         ListAssetsUseCase.Input input = ListAssetsUseCase.Input.builder()
                 .offset(offset)
                 .limit(limit)
-                .sub(sub)
-                .sourceSystem(sourceSystem)
+                .digitalUserId(digitalUserId)
+                .ids(ids)
+                .groupId(groupId)
+                .artifactId(artifactId)
                 .type(type)
                 .createdAtGte(createdAtGte)
                 .build();
@@ -63,11 +67,10 @@ public class AssetController implements AssetRestApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(String assetId, String sub) {
-        log.info("Deleting asset {} from digital user {}.", assetId, sub);
+    public ResponseEntity<Void> delete(String assetId) {
+        log.info("Deleting asset {}.", assetId);
         DeleteAssetUseCase.Input input = DeleteAssetUseCase.Input.builder()
                 .assetId(assetId)
-                .sub(sub)
                 .build();
 
         deleteAssetUseCase.execute(input);

@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Asset extends BaseObject {
 
+    private String externalId; // ID from the source system (e.g. ID from expense-tracker)
     private String type; // e.g. expense
     private ArtifactInformation artifactInfo;
     private PermissionPolicy permissionPolicy;
@@ -20,6 +21,7 @@ public class Asset extends BaseObject {
     @Getter
     @RequiredArgsConstructor
     public enum PermissionPolicy {
+
         OWNER("owner"), // digital user owns this asset
         VIEWER("viewer"); // digital user can only view this asset
 
@@ -32,6 +34,7 @@ public class Asset extends BaseObject {
     @Builder
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ArtifactInformation {
+
         private String groupId;
         private String artifactId;
         private String version;
