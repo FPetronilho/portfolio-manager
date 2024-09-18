@@ -11,7 +11,7 @@ public class DeleteAssetUseCase {
     private final PortfolioManagerDataProvider dataProvider;
 
     public void execute(Input input) {
-        dataProvider.deleteAsset(input.getAssetId());
+        dataProvider.deleteAsset(input.getId());
     }
 
     @NoArgsConstructor
@@ -19,6 +19,6 @@ public class DeleteAssetUseCase {
     @Data
     @Builder
     public static class Input {
-        private String assetId;
+        private String id;
     }
 }

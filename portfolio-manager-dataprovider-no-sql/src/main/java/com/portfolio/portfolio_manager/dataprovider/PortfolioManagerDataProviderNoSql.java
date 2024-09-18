@@ -28,7 +28,7 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public void deleteDigitalUser(String id) {
+    public void deleteDigitalUser(String digitalUserId) {
 
     }
 

@@ -49,14 +49,13 @@ public interface AssetRestApi {
                 @Pattern(regexp = Constants.ID_LIST_REGEX,
                         message = Constants.ASSET_IDS_INVALID_MSG) String ids,
 
-            //TODO: Change regex and messages for artifact
             @RequestParam(name = "artifactInfo.groupId")
-                @Pattern(regexp = Constants.SOURCE_SYSTEM_REGEX,
-                        message = Constants.SOURCE_SYSTEM_INVALID_MSG) String groupId,
+                @Pattern(regexp = Constants.GROUP_ID_REGEX,
+                        message = Constants.GROUP_ID_INVALID_MSG) String groupId,
 
             @RequestParam(name = "artifactInfo.artifactId")
-            @Pattern(regexp = Constants.SOURCE_SYSTEM_REGEX,
-                    message = Constants.SOURCE_SYSTEM_INVALID_MSG) String artifactId,
+            @Pattern(regexp = Constants.ARTIFACT_ID_REGEX,
+                    message = Constants.ARTIFACT_ID_INVALID_MSG) String artifactId,
 
             @RequestParam
                 @Pattern(regexp = Constants.TYPE_REGEX,
@@ -66,8 +65,8 @@ public interface AssetRestApi {
                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdAtGte
             );
 
-    @DeleteMapping("/{assetId}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
-            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String assetId
+            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String id
     );
 }

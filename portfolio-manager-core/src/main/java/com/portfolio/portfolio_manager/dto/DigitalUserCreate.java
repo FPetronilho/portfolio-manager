@@ -1,7 +1,6 @@
 package com.portfolio.portfolio_manager.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.portfolio.portfolio_manager.domain.Asset;
 import com.portfolio.portfolio_manager.domain.DigitalUser;
 import com.portfolio.portfolio_manager.util.Constants;
 import jakarta.validation.constraints.NotNull;

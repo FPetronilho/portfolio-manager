@@ -14,7 +14,7 @@ public interface PortfolioManagerDataProvider {
 
     DigitalUser getBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP);
 
-    void deleteDigitalUser(String id);
+    void deleteDigitalUser(String digitalUserId);
 
     Asset createAsset(AssetCreate assetCreate, String digitalUserId);
 

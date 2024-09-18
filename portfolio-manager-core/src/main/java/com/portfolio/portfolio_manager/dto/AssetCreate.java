@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssetCreate {
 
-    //TODO: To implement validation it will be necessary to fully replicate the domain and validate each field.
+    // TODO: To implement validation it will be necessary to fully replicate the domain and validate each field.
 
     @NotNull(message = Constants.ASSET_EXTERNAL_ID_MANDATORY_MSG)
     @Pattern(regexp = Constants.ID_REGEX, message = Constants.ASSET_EXTERNAL_ID_INVALID_MSG)
