@@ -24,7 +24,7 @@ public interface DigitalUserRestApi {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<DigitalUser> getBySubAndIdP(
             @RequestParam(name = "idPInfo.subject")
-                @Pattern(regexp = Constants.SUB_REGEX, message = Constants.DIGITAL_USER_SUB_INVALID_MSG) String sub,
+                @Pattern(regexp = Constants.SUB_REGEX, message = Constants.SUB_INVALID_MSG) String sub,
 
             @RequestParam(name = "idPInfo.identityProvider") DigitalUser.IdentityProviderInformation.IdentityProvider idP
     );
