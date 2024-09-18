@@ -27,11 +27,11 @@ public class AssetController implements AssetRestApi {
     private final DeleteAssetUseCase deleteAssetUseCase;
 
     @Override
-    public ResponseEntity<Asset> create(AssetCreate assetCreate, String sub) {
-        log.info("Creating asset {} for user {}.", assetCreate, sub);
+    public ResponseEntity<Asset> create(AssetCreate assetCreate, String digitalUserId) {
+        log.info("Creating asset {} for user {}.", assetCreate, digitalUserId);
         CreateAssetUseCase.Input input = CreateAssetUseCase.Input.builder()
                 .assetCreate(assetCreate)
-                .sub(sub)
+                .digitalUserId(digitalUserId)
                 .build();
 
         CreateAssetUseCase.Output output = createAssetUseCase.execute(input);

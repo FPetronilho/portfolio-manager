@@ -23,12 +23,17 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
+    public DigitalUser getBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP) {
+        return null;
+    }
+
+    @Override
     public void deleteDigitalUser(String id) {
 
     }
 
     @Override
-    public Asset createAsset(String digitalUserId, AssetCreate assetCreate) {
+    public Asset createAsset(AssetCreate assetCreate, String digitalUserId) {
         return null;
     }
 

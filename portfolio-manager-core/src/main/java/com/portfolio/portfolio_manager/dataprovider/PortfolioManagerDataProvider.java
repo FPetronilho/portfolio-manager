@@ -12,9 +12,11 @@ public interface PortfolioManagerDataProvider {
 
     DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate);
 
+    DigitalUser getBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP);
+
     void deleteDigitalUser(String id);
 
-    Asset createAsset(String digitalUserId, AssetCreate assetCreate);
+    Asset createAsset(AssetCreate assetCreate, String digitalUserId);
 
     List<Asset> listAssets(ListAssetsUseCase.Input input);
 
