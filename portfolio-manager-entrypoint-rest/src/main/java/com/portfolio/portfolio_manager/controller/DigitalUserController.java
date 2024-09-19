@@ -22,11 +22,6 @@ public class DigitalUserController implements DigitalUserRestApi {
     private final CreateDigitalUserUseCase createDigitalUserUseCase;
     private final DeleteDigitalUserUseCase deleteDigitalUserUseCase;
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
-
     @Override
     public ResponseEntity<DigitalUser> create(DigitalUserCreate digitalUserCreate) {
         log.info("Creating digital user: {}.", digitalUserCreate);

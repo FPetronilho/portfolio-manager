@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,5 +28,7 @@ public class DigitalUserDocument extends BaseDocument {
     private DigitalUser.IdentityProviderInformation idPInfo;
     private DigitalUser.PersonalInformation personalInfo;
     private List<DigitalUser.ContactMedium> contactMediumList;
-    private List<Asset> assets;
+
+    @Field("assets")
+    private List<Asset> assets = new ArrayList<>();
 }

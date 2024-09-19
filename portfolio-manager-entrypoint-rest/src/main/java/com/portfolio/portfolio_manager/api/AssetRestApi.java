@@ -65,8 +65,8 @@ public interface AssetRestApi {
                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdAtGte
             );
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{externalId}")
     ResponseEntity<Void> delete(
-            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String id
+            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String externalId
     );
 }

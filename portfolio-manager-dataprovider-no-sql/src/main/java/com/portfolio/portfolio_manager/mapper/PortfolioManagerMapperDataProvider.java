@@ -1,6 +1,5 @@
 package com.portfolio.portfolio_manager.mapper;
 
-import com.portfolio.portfolio_manager.document.AssetDocument;
 import com.portfolio.portfolio_manager.document.DigitalUserDocument;
 import com.portfolio.portfolio_manager.domain.Asset;
 import com.portfolio.portfolio_manager.domain.DigitalUser;
@@ -29,11 +28,5 @@ public interface PortfolioManagerMapperDataProvider {
     @Mapping(target = "assets", ignore = true)
     DigitalUserDocument toDigitalUserDocument(DigitalUserCreate digitalUserCreate);
 
-    Asset toAsset(AssetDocument assetDocument);
-
-    List<Asset> toAssetList(List<AssetDocument> assetDocuments);
-
-    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
-    @Mapping(target = "dbId", ignore = true)
-    AssetDocument toAssetDocument(AssetCreate assetCreate);
+    Asset toAsset(AssetCreate assetCreate);
 }

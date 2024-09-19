@@ -67,10 +67,10 @@ public class AssetController implements AssetRestApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(String id) {
-        log.info("Deleting asset {}.", id);
+    public ResponseEntity<Void> delete(String externalId) {
+        log.info("Deleting asset {}.", externalId);
         DeleteAssetUseCase.Input input = DeleteAssetUseCase.Input.builder()
-                .id(id)
+                .externalId(externalId)
                 .build();
 
         deleteAssetUseCase.execute(input);

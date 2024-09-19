@@ -1,25 +1,36 @@
 package com.portfolio.portfolio_manager.dataprovider;
 
+import com.mongodb.client.result.DeleteResult;
+import com.portfolio.portfolio_manager.document.DigitalUserDocument;
 import com.portfolio.portfolio_manager.domain.Asset;
 import com.portfolio.portfolio_manager.domain.DigitalUser;
 import com.portfolio.portfolio_manager.dto.AssetCreate;
 import com.portfolio.portfolio_manager.dto.DigitalUserCreate;
+import com.portfolio.portfolio_manager.exception.ResourceNotFoundException;
+import com.portfolio.portfolio_manager.mapper.PortfolioManagerMapperDataProvider;
 import com.portfolio.portfolio_manager.usecases.ListAssetsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataProvider {
 
     private final MongoTemplate mongoTemplate;
+    private final PortfolioManagerMapperDataProvider mapper;
 
     @Override
     public DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate) {
-        return null;
+        DigitalUserDocument digitalUserDocument = mapper.toDigitalUserDocument(digitalUserCreate);
+        digitalUserDocument = mongoTemplate.save(digitalUserDocument);
+        return mapper.toDigitalUser(digitalUserDocument);
     }
 
     @Override
@@ -29,12 +40,21 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
 
     @Override
     public void deleteDigitalUser(String digitalUserId) {
+        Query query = new Query().addCriteria(Criteria.where("id").is(digitalUserId));
+        DeleteResult deleteResult = mongoTemplate.remove(query, DigitalUserDocument.class);
 
+        if (deleteResult.getDeletedCount() == 0) {
+            throw new ResourceNotFoundException(DigitalUserDocument.class, digitalUserId);
+        }
     }
 
     @Override
     public Asset createAsset(AssetCreate assetCreate, String digitalUserId) {
-        return null;
+        Asset asset = mapper.toAsset(assetCreate);
+        DigitalUserDocument digitalUserDocument = findDigitalUserDocumentById(digitalUserId);
+        digitalUserDocument.getAssets().add(asset);
+        mongoTemplate.save(digitalUserDocument);
+        return asset;
     }
 
     @Override
@@ -43,7 +63,20 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public void deleteAsset(String assetId) {
+    public void deleteAsset(String assetExternalId) {
+        Query query = new Query(Criteria.where("assets.externalId").is(assetExternalId));
+        Update update = new Update().pull("assets", Query.query(Criteria.where("externalId").is(assetExternalId)));
+        mongoTemplate.updateMulti(query, update, DigitalUserDocument.class);
+    }
 
+    private DigitalUserDocument findDigitalUserDocumentById(String id) {
+        Query query = new Query().addCriteria(Criteria.where("id").is(id));
+        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
+
+        digitalUserDocument = Optional.ofNullable(digitalUserDocument).orElseThrow(
+                () -> new ResourceNotFoundException(DigitalUserDocument.class, id)
+        );
+
+        return digitalUserDocument;
     }
 }
