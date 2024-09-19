@@ -6,6 +6,7 @@ import com.portfolio.portfolio_manager.domain.Asset;
 import com.portfolio.portfolio_manager.domain.DigitalUser;
 import com.portfolio.portfolio_manager.dto.AssetCreate;
 import com.portfolio.portfolio_manager.dto.DigitalUserCreate;
+import com.portfolio.portfolio_manager.exception.ResourceAlreadyExistsException;
 import com.portfolio.portfolio_manager.exception.ResourceNotFoundException;
 import com.portfolio.portfolio_manager.mapper.PortfolioManagerMapperDataProvider;
 import com.portfolio.portfolio_manager.usecases.ListAssetsUseCase;
@@ -51,6 +52,15 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     @Override
     public Asset createAsset(AssetCreate assetCreate, String digitalUserId) {
         Asset asset = mapper.toAsset(assetCreate);
+
+        /* Guarantees that the asset does not yet exist.
+        This prevents having multiple assets and more importantly, it guarantees that the same user cannot have an asset
+        where he is an Owner and a Viewer at the same time.
+         */
+        if (assetExistsByExternalId(assetCreate.getExternalId())) {
+            throw new ResourceAlreadyExistsException(Asset.class, assetCreate.getExternalId());
+        }
+
         DigitalUserDocument digitalUserDocument = findDigitalUserDocumentById(digitalUserId);
         digitalUserDocument.getAssets().add(asset);
         mongoTemplate.save(digitalUserDocument);
@@ -65,6 +75,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     @Override
     public void deleteAsset(String assetExternalId) {
         Query query = new Query(Criteria.where("assets.externalId").is(assetExternalId));
+
+        // Finds every user that has an asset with the externalId given and "pulls" it out of the assets list.
         Update update = new Update().pull("assets", Query.query(Criteria.where("externalId").is(assetExternalId)));
         mongoTemplate.updateMulti(query, update, DigitalUserDocument.class);
     }
@@ -78,5 +90,10 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         );
 
         return digitalUserDocument;
+    }
+
+    private boolean assetExistsByExternalId(String externalId) {
+        Query query = new Query().addCriteria(Criteria.where("assets.externalId").is(externalId));
+        return mongoTemplate.exists(query, DigitalUserDocument.class);
     }
 }
