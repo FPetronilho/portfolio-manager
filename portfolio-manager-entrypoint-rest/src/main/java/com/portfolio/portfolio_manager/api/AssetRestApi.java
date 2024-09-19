@@ -32,18 +32,20 @@ public interface AssetRestApi {
                     message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId
     );
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+            path = "/digitalUsers/{digitalUserId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     ResponseEntity<List<Asset>> list(
+            @PathVariable @Pattern(regexp = Constants.ID_REGEX,
+                    message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId,
+
             @RequestParam(required = false, defaultValue = Constants.DEFAULT_OFFSET)
                 @Min(value = Constants.MIN_OFFSET, message = Constants.OFFSET_INVALID_MSG) Integer offset,
 
             @RequestParam(required = false, defaultValue = Constants.DEFAULT_LIMIT)
                 @Min(value = Constants.MIN_LIMIT, message = Constants.LIMIT_INVALID_MSG)
                 @Max(value = Constants.MAX_LIMIT, message = Constants.LIMIT_INVALID_MSG) Integer limit,
-
-            @RequestParam
-                @Pattern(regexp = Constants.ID_REGEX,
-                        message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId,
 
             @RequestParam
                 @Pattern(regexp = Constants.ID_LIST_REGEX,

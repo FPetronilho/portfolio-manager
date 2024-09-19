@@ -27,9 +27,10 @@ public class ListAssetsUseCase {
     @Data
     @Builder
     public static class Input {
+
+        private String digitalUserId;
         private Integer offset;
         private Integer limit;
-        private String digitalUserId;
         private String ids;
         private String groupId;
         private String artifactId;

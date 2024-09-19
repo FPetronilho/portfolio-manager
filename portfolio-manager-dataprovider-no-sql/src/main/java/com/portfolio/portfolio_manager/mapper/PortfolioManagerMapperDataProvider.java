@@ -28,5 +28,8 @@ public interface PortfolioManagerMapperDataProvider {
     @Mapping(target = "assets", ignore = true)
     DigitalUserDocument toDigitalUserDocument(DigitalUserCreate digitalUserCreate);
 
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     Asset toAsset(AssetCreate assetCreate);
 }
