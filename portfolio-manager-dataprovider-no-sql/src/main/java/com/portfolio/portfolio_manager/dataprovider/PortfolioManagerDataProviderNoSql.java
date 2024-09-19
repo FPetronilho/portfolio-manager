@@ -35,8 +35,18 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public DigitalUser getBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP) {
-        return null;
+    public DigitalUser getDigitalUserBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP) {
+        Query query = new Query().addCriteria(Criteria.where("idPInfo.subject").is(sub)
+                .and("idPInfo.identityProvider").is(idP));
+
+        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
+        digitalUserDocument = Optional.ofNullable(digitalUserDocument).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        DigitalUserDocument.class,
+                        "Combination of subject " + sub + " and idP " + idP)
+        );
+
+        return mapper.toDigitalUser(digitalUserDocument);
     }
 
     @Override
