@@ -11,14 +11,18 @@ import com.portfolio.portfolio_manager.exception.ResourceNotFoundException;
 import com.portfolio.portfolio_manager.mapper.PortfolioManagerMapperDataProvider;
 import com.portfolio.portfolio_manager.usecases.ListAssetsUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +83,38 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
 
     @Override
     public List<Asset> listAssets(ListAssetsUseCase.Input input) {
-        return null;
+        Query query = new Query();
+        query.with(PageRequest.of(input.getOffset(), input.getLimit()));
+        query.addCriteria(Criteria.where("id").is(input.getDigitalUserId()));
+        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
+
+        // If the digital user is found the filter the assets in-memory
+        if (digitalUserDocument != null && digitalUserDocument.getAssets() != null) {
+            return digitalUserDocument.getAssets().stream()
+                    // Apply filtering criteria on the asset fields that are being queried
+                    .filter(asset -> {
+                        boolean matches = true;
+
+                        // Apply filter to each inputted parameter
+                        matches &= input.getGroupId().equals(asset.getArtifactInfo().getGroupId());
+                        matches &= input.getArtifactId().equals(asset.getArtifactInfo().getArtifactId());
+                        matches &= input.getType().equals(asset.getType());
+
+                        if (input.getIds() != null && !input.getIds().isEmpty()) {
+                            matches &= input.getIds().contains(asset.getExternalId());
+                        }
+
+                        if (input.getCreatedAtGte() != null) {
+                            matches &= !asset.getCreatedAt().isBefore(input.getCreatedAtGte());
+                        }
+
+                        return matches;
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        // Return empty list if no digital user or assets satisfying the filters are found
+        return Collections.emptyList();
     }
 
     @Override

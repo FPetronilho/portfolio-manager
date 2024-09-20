@@ -5,7 +5,7 @@ import com.portfolio.portfolio_manager.domain.Asset;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,7 +35,7 @@ public class ListAssetsUseCase {
         private String groupId;
         private String artifactId;
         private String type;
-        private LocalDate createdAtGte;
+        private LocalDateTime createdAtGte;
     }
 
     @NoArgsConstructor

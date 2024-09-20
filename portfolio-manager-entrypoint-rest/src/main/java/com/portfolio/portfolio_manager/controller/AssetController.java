@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -47,7 +48,7 @@ public class AssetController implements AssetRestApi {
             String groupId,
             String artifactId,
             String type,
-            LocalDate createdAtGte
+            LocalDateTime createdAtGte
     ) {
 
         ListAssetsUseCase.Input input = ListAssetsUseCase.Input.builder()
