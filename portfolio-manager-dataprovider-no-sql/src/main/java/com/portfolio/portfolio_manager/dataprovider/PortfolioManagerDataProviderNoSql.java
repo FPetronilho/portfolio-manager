@@ -18,7 +18,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -85,36 +84,47 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     public List<Asset> listAssets(ListAssetsUseCase.Input input) {
         Query query = new Query();
         query.with(PageRequest.of(input.getOffset(), input.getLimit()));
-        query.addCriteria(Criteria.where("id").is(input.getDigitalUserId()));
-        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
 
-        // If the digital user is found the filter the assets in-memory
-        if (digitalUserDocument != null && digitalUserDocument.getAssets() != null) {
-            return digitalUserDocument.getAssets().stream()
-                    // Apply filtering criteria on the asset fields that are being queried
-                    .filter(asset -> {
-                        boolean matches = true;
-
-                        // Apply filter to each inputted parameter
-                        matches &= input.getGroupId().equals(asset.getArtifactInfo().getGroupId());
-                        matches &= input.getArtifactId().equals(asset.getArtifactInfo().getArtifactId());
-                        matches &= input.getType().equals(asset.getType());
-
-                        if (input.getIds() != null && !input.getIds().isEmpty()) {
-                            matches &= input.getIds().contains(asset.getExternalId());
-                        }
-
-                        if (input.getCreatedAtGte() != null) {
-                            matches &= !asset.getCreatedAt().isBefore(input.getCreatedAtGte());
-                        }
-
-                        return matches;
-                    })
-                    .collect(Collectors.toList());
+        if (input.getDigitalUserId() != null && !input.getDigitalUserId().isEmpty()) {
+            query.addCriteria(Criteria.where("id").is(input.getDigitalUserId()));
         }
 
-        // Return empty list if no digital user or assets satisfying the filters are found
-        return Collections.emptyList();
+        // Add criteria for matching assets
+        Criteria assetCriteria = new Criteria();
+        assetCriteria.and("assets.artifactInfo.groupId").is(input.getGroupId());
+        assetCriteria.and("assets.artifactInfo.artifactId").is(input.getArtifactId());
+        assetCriteria.and("assets.type").is(input.getType());
+
+        if (input.getIds() != null && !input.getIds().isEmpty()) {
+            assetCriteria.and("assets.externalId").in(input.getIds());
+        }
+
+        if (input.getCreatedAtGte() != null) {
+            assetCriteria.and("assets.createdAt").gte(input.getCreatedAtGte());
+        }
+
+        query.addCriteria(assetCriteria);
+        List<DigitalUserDocument> digitalUserDocuments = mongoTemplate.find(query, DigitalUserDocument.class);
+
+        return digitalUserDocuments.stream()
+                .flatMap(user -> user.getAssets().stream()) // Flatten the assets from multiple users
+                .filter(asset -> { // Apply filtering logic to ensure only matching assets are collected
+                    boolean matches = true;
+                    matches &= asset.getArtifactInfo().getGroupId().equals(input.getGroupId());
+                    matches &= asset.getArtifactInfo().getArtifactId().equals(input.getArtifactId());
+                    matches &= asset.getType().equals(input.getType());
+
+                    if (input.getIds() != null && !input.getIds().isEmpty()) {
+                        matches &= input.getIds().contains(asset.getExternalId());
+                    }
+
+                    if (input.getCreatedAtGte() != null) {
+                        matches &= !asset.getCreatedAt().isBefore(input.getCreatedAtGte());
+                    }
+
+                    return matches;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
