@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestMapping("/api/v1/assets")
@@ -32,8 +33,14 @@ public interface AssetRestApi {
                     message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId
     );
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+            path = "/digitalUsers/{digitalUserId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     ResponseEntity<List<Asset>> list(
+            @PathVariable @Pattern(regexp = Constants.ID_REGEX,
+                    message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId,
+
             @RequestParam(required = false, defaultValue = Constants.DEFAULT_OFFSET)
                 @Min(value = Constants.MIN_OFFSET, message = Constants.OFFSET_INVALID_MSG) Integer offset,
 
@@ -41,13 +48,9 @@ public interface AssetRestApi {
                 @Min(value = Constants.MIN_LIMIT, message = Constants.LIMIT_INVALID_MSG)
                 @Max(value = Constants.MAX_LIMIT, message = Constants.LIMIT_INVALID_MSG) Integer limit,
 
-            @RequestParam
-                @Pattern(regexp = Constants.ID_REGEX,
-                        message = Constants.DIGITAL_USER_ID_INVALID_MSG) String digitalUserId,
-
-            @RequestParam
+            @RequestParam(required = false)
                 @Pattern(regexp = Constants.ID_LIST_REGEX,
-                        message = Constants.ASSET_IDS_INVALID_MSG) String ids,
+                        message = Constants.IDS_INVALID_MSG) String ids,
 
             @RequestParam(name = "artifactInfo.groupId")
                 @Pattern(regexp = Constants.GROUP_ID_REGEX,
@@ -62,11 +65,11 @@ public interface AssetRestApi {
                         message = Constants.TYPE_INVALID_MSG) String type,
 
             @RequestParam(required = false)
-                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdAtGte
+                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAtGte
             );
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{externalId}")
     ResponseEntity<Void> delete(
-            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String id
+            @PathVariable @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String externalId
     );
 }

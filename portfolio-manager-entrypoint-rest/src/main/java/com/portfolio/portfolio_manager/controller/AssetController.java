@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,20 +41,20 @@ public class AssetController implements AssetRestApi {
 
     @Override
     public ResponseEntity<List<Asset>> list(
+            String digitalUserId,
             Integer offset,
             Integer limit,
-            String digitalUserId,
             String ids,
             String groupId,
             String artifactId,
             String type,
-            LocalDate createdAtGte
+            LocalDateTime createdAtGte
     ) {
 
         ListAssetsUseCase.Input input = ListAssetsUseCase.Input.builder()
+                .digitalUserId(digitalUserId)
                 .offset(offset)
                 .limit(limit)
-                .digitalUserId(digitalUserId)
                 .ids(ids)
                 .groupId(groupId)
                 .artifactId(artifactId)
@@ -67,10 +68,10 @@ public class AssetController implements AssetRestApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(String id) {
-        log.info("Deleting asset {}.", id);
+    public ResponseEntity<Void> delete(String externalId) {
+        log.info("Deleting asset {}.", externalId);
         DeleteAssetUseCase.Input input = DeleteAssetUseCase.Input.builder()
-                .id(id)
+                .externalId(externalId)
                 .build();
 
         deleteAssetUseCase.execute(input);

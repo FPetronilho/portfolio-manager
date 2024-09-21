@@ -27,6 +27,7 @@ public class DigitalUser extends BaseObject {
     @Builder
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class IdentityProviderInformation {
+
         private String subject;
         private IdentityProvider identityProvider;
         private String tenantId;
@@ -35,6 +36,7 @@ public class DigitalUser extends BaseObject {
         @Getter
         @RequiredArgsConstructor
         public enum IdentityProvider {
+
             GOOGLE_IDENTITY_PLATFORM("googleIdentityPlatform"),
             APPLE_ID("appleId"),
             MICROSOFT_ENTRA_ID("microsoftEntraId"),
@@ -50,6 +52,7 @@ public class DigitalUser extends BaseObject {
     @Builder
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class PersonalInformation {
+
         private String fullName;
         private String firstName;
         private String middleName;
@@ -64,6 +67,7 @@ public class DigitalUser extends BaseObject {
     @Builder
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ContactMedium {
+
         private boolean preferred;
         private Type type;
         private Characteristic characteristic;
@@ -73,6 +77,7 @@ public class DigitalUser extends BaseObject {
         @Getter
         @RequiredArgsConstructor
         public enum Type {
+
             PHONE("phone"),
             EMAIL("email"),
             GEOGRAPHIC_ADDRESS("geographicAddress");
@@ -86,6 +91,7 @@ public class DigitalUser extends BaseObject {
         @Builder
         @JsonInclude(JsonInclude.Include.NON_NULL)
         public static class Characteristic {
+
             // Phone
             private String countryCode;
             private String phoneNumber;
