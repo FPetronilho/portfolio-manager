@@ -2,11 +2,12 @@
 spring.application:
   name: portfolio-manager
   version: 0.0.1-SNAPSHOT
-  environment: local
+  environment: ${ENV}
 
 server:
   port: 8080
   ssl.enabled: false # disable https
+  servlet.context-path: /${spring.application.name}
 
 logging.level:
   root: INFO
@@ -15,13 +16,9 @@ logging.level:
 
 ###################  MongoDB configuration  ###################
 spring.data.mongodb:
-  uri: mongodb://localhost:27017/PortfolioManager
+  uri: SECRET_MONGODB_ENDPOINT
   auto-index-creation: true
-
-###################  MongoDB configuration  ###################
-db.populateOnStartUp: true
 
 ###################  Authentication and Authorization  ###################
 auth.enabled: true
-auth.jwt.secret: 0SnXhfnVgPK0EZRWfr3tV3NGDvHacT1mSg6ziXtoWhdVdhV5msi7oHDspXAqg5Bx
-# Jwt Example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzU2ODk1OTksInN1YiI6IkNoaWNvIiwiaWF0IjoxNzI1Njk5NjE4LCJpc3MiOiJhdXRoOCIsImF1ZCI6WyJwb3J0Zm9saW8tbWFuYWdlciJdLCJzY29wZSI6IkRJR0lUQUxfVVNFUl9DUkVBVEUifQ.8FJHEwGMRbdlFw_AG5l_rEg8OlO317zOlGveSfn5RDalCDEzB4VlrXjOY_vu4Yxllcx_TD6977lnpjJQA7rNkg
+auth.jwt.secret: SECRET_AUTH_SECRET

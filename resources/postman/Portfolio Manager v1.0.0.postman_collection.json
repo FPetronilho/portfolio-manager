@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "35b1d120-06bc-411f-86e3-d4384e7f98fd",
+		"name": "Portfolio Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11662760"
+	},
+	"item": [
+		{
+			"name": "Create digital user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idPInfo\": {\r\n        \"subject\": \"Chico\",\r\n        \"identityProvider\": \"MICROSOFT_ENTRA_ID\",\r\n        \"tenantId\": \"testID123\"\r\n    },\r\n    \"personalInfo\": {\r\n        \"firstName\": \"Francisco\"\r\n    },\r\n    \"contactMediumList\": [{\r\n        \"preferred\": false\r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/digitalUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"digitalUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get digital user by sub and IdP",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Delete digital user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/digitalUsers/da81281f-c270-4653-8ec8-b75471f85c66",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"digitalUsers",
+						"da81281f-c270-4653-8ec8-b75471f85c66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create asset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"externalId\": \"03809a1c-4c1e-4c01-befb-4eb1b50e908e\",\r\n    \"type\": \"expense\",\r\n    \"artifactInfo\": {\r\n        \"groupId\": \"com.portfolio\",\r\n        \"artifactId\": \"expense-tracker\",\r\n        \"version\": \"0.0.1-SNAPSHOT\"\r\n    },\r\n    \"permissionPolicy\": \"OWNER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/assets/digitalUsers/4409dc28-b8aa-49b4-9905-9fbf5685438e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"assets",
+						"digitalUsers",
+						"4409dc28-b8aa-49b4-9905-9fbf5685438e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List assets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/assets/digitalUsers/73c6bb2a-37a0-4b8e-b5ba-b244d14d439a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"assets",
+						"digitalUsers",
+						"73c6bb2a-37a0-4b8e-b5ba-b244d14d439a"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "ids",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "groupId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "artifactId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "createdAtGte",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete asset",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/assets/03809a1c-4c1e-4c01-befb-4eb1b50e908e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"assets",
+						"03809a1c-4c1e-4c01-befb-4eb1b50e908e"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzU2ODk1OTksInN1YiI6IkNoaWNvIiwiaWF0IjoxNzI1Njk5NjE4LCJpc3MiOiJhdXRoOCIsImF1ZCI6WyJwb3J0Zm9saW8tbWFuYWdlciJdLCJzY29wZSI6IkRJR0lUQUxfVVNFUl9DUkVBVEUifQ.8FJHEwGMRbdlFw_AG5l_rEg8OlO317zOlGveSfn5RDalCDEzB4VlrXjOY_vu4Yxllcx_TD6977lnpjJQA7rNkg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
