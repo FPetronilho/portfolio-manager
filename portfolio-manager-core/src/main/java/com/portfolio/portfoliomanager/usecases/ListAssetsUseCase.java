@@ -35,6 +35,8 @@ public class ListAssetsUseCase {
         private String groupId;
         private String artifactId;
         private String type;
+        private LocalDateTime createdAtLte;
+        private LocalDateTime createdAt;
         private LocalDateTime createdAtGte;
     }
 

@@ -12,7 +12,11 @@ public class GetDigitalUserBySubAndIdPUseCase {
     private final PortfolioManagerDataProvider dataProvider;
 
     public Output execute(Input input) {
-        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdP(input.getSub(), input.getIdP());
+        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdP(
+                input.getSub(),
+                input.getIdP(),
+                input.getTenantId()
+        );
 
         return Output.builder()
                 .digitalUser(digitalUser)
@@ -26,6 +30,7 @@ public class GetDigitalUserBySubAndIdPUseCase {
     public static class Input {
         private String sub;
         private DigitalUser.IdentityProviderInformation.IdentityProvider idP;
+        private String tenantId;
     }
 
     @NoArgsConstructor

@@ -37,15 +37,21 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public DigitalUser getDigitalUserBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP) {
+    public DigitalUser getDigitalUserBySubAndIdP(
+            String sub,
+            DigitalUser.IdentityProviderInformation.IdentityProvider idP,
+            String tenantId
+    ) {
+
         Query query = new Query().addCriteria(Criteria.where("idPInfo.subject").is(sub)
-                .and("idPInfo.identityProvider").is(idP));
+                .and("idPInfo.identityProvider").is(idP)
+                .and("idPInfo.tenantId").is(tenantId));
 
         DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
         digitalUserDocument = Optional.ofNullable(digitalUserDocument).orElseThrow(
                 () -> new ResourceNotFoundException(
                         DigitalUserDocument.class,
-                        "Combination of subject " + sub + " and idP " + idP)
+                        "combination of subject " + sub + ", idP " + idP + " and tenant " + tenantId)
         );
 
         return mapper.toDigitalUser(digitalUserDocument);
@@ -64,15 +70,6 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     @Override
     public Asset createAsset(AssetCreate assetCreate, String digitalUserId) {
         Asset asset = mapper.toAsset(assetCreate);
-
-        /* Guarantees that the asset does not yet exist.
-        This prevents having multiple assets and more importantly, it guarantees that the same user cannot have an asset
-        where he is an Owner and a Viewer at the same time.
-         */
-        if (assetExistsByExternalId(assetCreate.getExternalId())) {
-            throw new ResourceAlreadyExistsException(Asset.class, assetCreate.getExternalId());
-        }
-
         DigitalUserDocument digitalUserDocument = findDigitalUserDocumentById(digitalUserId);
         digitalUserDocument.getAssets().add(asset);
         mongoTemplate.save(digitalUserDocument);
@@ -129,6 +126,11 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     @Override
     public void deleteAsset(String assetExternalId) {
         Query query = new Query(Criteria.where("assets.externalId").is(assetExternalId));
+        boolean assetExists = mongoTemplate.exists(query, DigitalUserDocument.class);
+
+        if (!assetExists) {
+            throw new ResourceNotFoundException(Asset.class, assetExternalId);
+        }
 
         // Finds every user that has an asset with the externalId given and "pulls" it out of the assets list.
         Update update = new Update().pull("assets", Query.query(Criteria.where("externalId").is(assetExternalId)));
@@ -146,7 +148,22 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         return digitalUserDocument;
     }
 
-    private boolean assetExistsByExternalId(String externalId) {
+    @Override
+    public boolean digitalUserExistsBySubAndIdPAndTenantId(
+            String sub,
+            DigitalUserCreate.IdentityProviderInformation.IdentityProvider idP,
+            String tenantId
+    ) {
+        Query query = new Query().addCriteria(Criteria.where("idPInfo.subject").is(sub)
+                .and("idPInfo.identityProvider").is(idP)
+                .and("idPInfo.tenantId").is(tenantId)
+        );
+
+        return mongoTemplate.exists(query, DigitalUserDocument.class);
+    }
+
+    @Override
+    public boolean assetExistsByExternalId(String externalId) {
         Query query = new Query().addCriteria(Criteria.where("assets.externalId").is(externalId));
         return mongoTemplate.exists(query, DigitalUserDocument.class);
     }

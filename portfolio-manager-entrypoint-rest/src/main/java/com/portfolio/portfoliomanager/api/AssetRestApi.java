@@ -73,7 +73,6 @@ public interface AssetRestApi {
 
     @DeleteMapping
     ResponseEntity<Void> delete(
-            // TODO: throw exception if Asset does not exist
             @RequestParam @Pattern(regexp = Constants.ID_REGEX, message = Constants.ID_INVALID_MSG) String externalId
     );
 }

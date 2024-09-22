@@ -22,13 +22,14 @@ public interface DigitalUserRestApi {
 
     // Will be used by the Authorization Server (Auth8) to retrieve the digital user info + assets and issue the JWT
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<DigitalUser> getDigitalUserBySubAndIdP(
+    ResponseEntity<DigitalUser> getDigitalUserBySubAndIdPAndTenantId(
             @RequestParam(name = "idPInfo.subject")
                 @Pattern(regexp = Constants.SUB_REGEX, message = Constants.SUB_INVALID_MSG) String sub,
 
-            @RequestParam(name = "idPInfo.identityProvider") DigitalUser.IdentityProviderInformation.IdentityProvider idP
+            @RequestParam(name = "idPInfo.identityProvider") DigitalUser.IdentityProviderInformation.IdentityProvider idP,
 
-            // TODO: add "idPInfo.tenantId" criteria
+            @RequestParam(name = "idPInfo.tenantId")
+                @Pattern(regexp = Constants.TENANT_ID_REGEX, message = Constants.TENANT_ID_INVALID_MSG) String tenantId
     );
 
     @DeleteMapping("/{id}")

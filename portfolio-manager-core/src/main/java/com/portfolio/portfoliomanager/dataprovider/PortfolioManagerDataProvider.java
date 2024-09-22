@@ -12,7 +12,17 @@ public interface PortfolioManagerDataProvider {
 
     DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate);
 
-    DigitalUser getDigitalUserBySubAndIdP(String sub, DigitalUser.IdentityProviderInformation.IdentityProvider idP);
+    DigitalUser getDigitalUserBySubAndIdP(
+            String sub,
+            DigitalUser.IdentityProviderInformation.IdentityProvider idP,
+            String tenantId
+    );
+
+    boolean digitalUserExistsBySubAndIdPAndTenantId(
+            String sub,
+            DigitalUserCreate.IdentityProviderInformation.IdentityProvider idP,
+            String tenantId
+    );
 
     void deleteDigitalUser(String digitalUserId);
 
@@ -21,4 +31,6 @@ public interface PortfolioManagerDataProvider {
     List<Asset> listAssets(ListAssetsUseCase.Input input);
 
     void deleteAsset(String assetExternalId);
+
+    boolean assetExistsByExternalId(String externalId);
 }

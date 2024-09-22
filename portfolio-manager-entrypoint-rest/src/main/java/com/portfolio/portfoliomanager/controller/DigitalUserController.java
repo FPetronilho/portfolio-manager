@@ -35,15 +35,17 @@ public class DigitalUserController implements DigitalUserRestApi {
     }
 
     @Override
-    public ResponseEntity<DigitalUser> getDigitalUserBySubAndIdP(
+    public ResponseEntity<DigitalUser> getDigitalUserBySubAndIdPAndTenantId(
             String sub,
-            DigitalUser.IdentityProviderInformation.IdentityProvider idP
+            DigitalUser.IdentityProviderInformation.IdentityProvider idP,
+            String tenantId
     ) {
 
-        log.info("Getting digital user by subject: {} and identity provider: {}.", sub, idP);
+        log.info("Getting digital user by subject: {}, identity provider: {} and tenantId: {}.", sub, idP, tenantId);
         GetDigitalUserBySubAndIdPUseCase.Input input = GetDigitalUserBySubAndIdPUseCase.Input.builder()
                 .sub(sub)
                 .idP(idP)
+                .tenantId(tenantId)
                 .build();
 
         GetDigitalUserBySubAndIdPUseCase.Output output = getDigitalUserBySubAndIdPUseCase.execute(input);

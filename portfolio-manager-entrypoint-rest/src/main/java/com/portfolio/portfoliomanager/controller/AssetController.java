@@ -60,7 +60,8 @@ public class AssetController implements AssetRestApi {
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .type(type)
-                // TODO: add createdAtLte and createdAt
+                .createdAtLte(createdAtLte)
+                .createdAt(createdAt)
                 .createdAtGte(createdAtGte)
                 .build();
 

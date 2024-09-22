@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d16b65bf-afb1-47f4-a023-ee90a06b6a38",
+		"_postman_id": "c1d9716c-40aa-41db-8587-6bc42c945ecc",
 		"name": "Portfolio Manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "7219001"
+		"_exporter_id": "11662760"
 	},
 	"item": [
 		{
@@ -55,33 +55,6 @@
 					"response": []
 				},
 				{
-					"name": "by ID",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/digitalUsers/:id",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{portfolio-host}}"
-							],
-							"port": "{{portfolio-port}}",
-							"path": [
-								"{{portfolio-base-path}}",
-								"digitalUsers",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{digital-user-id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "by sub & IdP & tenant",
 					"request": {
 						"method": "GET",
@@ -114,6 +87,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/digitalUsers/:id",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"digitalUsers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{digital-user-id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -128,7 +128,7 @@
 							"script": {
 								"exec": [
 									"const json = pm.response.json();\r",
-									"pm.environment.set(\"asset-external-id\", json.id);"
+									"pm.environment.set(\"asset-external-id\", json.externalId);"
 								],
 								"type": "text/javascript",
 								"packages": {}
