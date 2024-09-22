@@ -1,184 +1,271 @@
 {
 	"info": {
-		"_postman_id": "35b1d120-06bc-411f-86e3-d4384e7f98fd",
+		"_postman_id": "d16b65bf-afb1-47f4-a023-ee90a06b6a38",
 		"name": "Portfolio Manager",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "11662760"
+		"_exporter_id": "7219001"
 	},
 	"item": [
 		{
-			"name": "Create digital user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"idPInfo\": {\r\n        \"subject\": \"Chico\",\r\n        \"identityProvider\": \"MICROSOFT_ENTRA_ID\",\r\n        \"tenantId\": \"testID123\"\r\n    },\r\n    \"personalInfo\": {\r\n        \"firstName\": \"Francisco\"\r\n    },\r\n    \"contactMediumList\": [{\r\n        \"preferred\": false\r\n    }]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Digital User",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"pm.environment.set(\"digital-user-id\", json.id);\r",
+									"pm.environment.set(\"sub\", json.idPInfo.subject);\r",
+									"pm.environment.set(\"idp\", json.idPInfo.identityProvider);\r",
+									"pm.environment.set(\"tenant-id\", json.idPInfo.tenantId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idPInfo\": {\r\n        \"subject\": \"Chico\",\r\n        \"identityProvider\": \"MICROSOFT_ENTRA_ID\",\r\n        \"tenantId\": \"testID123\"\r\n    },\r\n    \"personalInfo\": {\r\n        \"firstName\": \"Francisco\"\r\n    },\r\n    \"contactMediumList\": [\r\n        {\r\n            \"preferred\": false\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/digitalUsers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"digitalUsers"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/digitalUsers",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"digitalUsers"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get digital user by sub and IdP",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Delete digital user",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/digitalUsers/da81281f-c270-4653-8ec8-b75471f85c66",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"digitalUsers",
-						"da81281f-c270-4653-8ec8-b75471f85c66"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create asset",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"externalId\": \"03809a1c-4c1e-4c01-befb-4eb1b50e908e\",\r\n    \"type\": \"expense\",\r\n    \"artifactInfo\": {\r\n        \"groupId\": \"com.portfolio\",\r\n        \"artifactId\": \"expense-tracker\",\r\n        \"version\": \"0.0.1-SNAPSHOT\"\r\n    },\r\n    \"permissionPolicy\": \"OWNER\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/digitalUsers/:id",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"digitalUsers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{digital-user-id}}"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/assets/digitalUsers/4409dc28-b8aa-49b4-9905-9fbf5685438e",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"assets",
-						"digitalUsers",
-						"4409dc28-b8aa-49b4-9905-9fbf5685438e"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List assets",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/assets/digitalUsers/73c6bb2a-37a0-4b8e-b5ba-b244d14d439a",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"assets",
-						"digitalUsers",
-						"73c6bb2a-37a0-4b8e-b5ba-b244d14d439a"
-					],
-					"query": [
-						{
-							"key": "offset",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "limit",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "ids",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "groupId",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "artifactId",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "type",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "createdAtGte",
-							"value": null,
-							"disabled": true
+				{
+					"name": "by sub & IdP & tenant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/digitalUsers?idPInfo.subject={{sub}}&idPInfo.identityProvider={{idp}}&idPInfo.tenantId={{tenant-id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"digitalUsers"
+							],
+							"query": [
+								{
+									"key": "idPInfo.subject",
+									"value": "{{sub}}"
+								},
+								{
+									"key": "idPInfo.identityProvider",
+									"value": "{{idp}}"
+								},
+								{
+									"key": "idPInfo.tenantId",
+									"value": "{{tenant-id}}"
+								}
+							]
 						}
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete asset",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/assets/03809a1c-4c1e-4c01-befb-4eb1b50e908e",
-					"protocol": "http",
-					"host": [
-						"localhost"
+			"name": "Asset",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"pm.environment.set(\"asset-external-id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
 					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"assets",
-						"03809a1c-4c1e-4c01-befb-4eb1b50e908e"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"externalId\": \"{{$guid}}\",\r\n    \"type\": \"expense\",\r\n    \"artifactInfo\": {\r\n        \"groupId\": \"com.portfolio\",\r\n        \"artifactId\": \"expense-tracker\",\r\n        \"version\": \"0.0.1-SNAPSHOT\"\r\n    },\r\n    \"permissionPolicy\": \"OWNER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/assets/digitalUsers/:id",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"assets",
+								"digitalUsers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{digital-user-id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by criteria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/assets?artifactInfo.groupId=com.portfolio&artifactInfo.artifactId=expense-tracker&type=expense",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "digitalUserId",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "ids",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "artifactInfo.groupId",
+									"value": "com.portfolio"
+								},
+								{
+									"key": "artifactInfo.artifactId",
+									"value": "expense-tracker"
+								},
+								{
+									"key": "type",
+									"value": "expense"
+								},
+								{
+									"key": "createdAtLte",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "createdAt",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "createdAtGte",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by External ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{portfolio-host}}:{{portfolio-port}}/{{portfolio-base-path}}/assets?externalId={{asset-external-id}}",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{portfolio-host}}"
+							],
+							"port": "{{portfolio-port}}",
+							"path": [
+								"{{portfolio-base-path}}",
+								"assets"
+							],
+							"query": [
+								{
+									"key": "externalId",
+									"value": "{{asset-external-id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"auth": {
