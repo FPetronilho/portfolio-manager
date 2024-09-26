@@ -23,6 +23,8 @@ public class Constants {
     public static final String ASSET_GROUP_ID_MANDATORY_MSG = "'groupId' is mandatory.";
     public static final String ASSET_ARTIFACT_ID_MANDATORY_MSG = "'artifactId' is mandatory.";
     public static final String ASSET_VERSION_MANDATORY_MSG = "'version' is mandatory.";
+
+
     // Regex
     public static final String GROUP_ID_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,50}";
     public static final String ARTIFACT_ID_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,50}";
