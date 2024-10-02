@@ -32,7 +32,6 @@ public class Constants {
     public static final String TYPE_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,30}";
     public static final String ID_REGEX = "[a-fA-F\\d\\-]{36}";
     public static final String ID_LIST_REGEX = "[a-fA-F\\d\\-]{" + (36 * MAX_LIMIT) + "}";
-    public static final String IDS_INVALID_MSG = "'ids' must match: " + ID_LIST_REGEX + ".";
     public static final String SUB_REGEX = "^[a-zA-Z0-9_\\-\\.]+$";
     public static final String TENANT_ID_REGEX = "^[a-zA-Z0-9_\\-\\.]+$";
     public static final String FULL_NAME_REGEX = "^[A-Za-z]+(?:['-]?[A-Za-z]+)*(?: [A-Za-z]+(?:['-]?[A-Za-z]+)*)+$";
@@ -53,6 +52,7 @@ public class Constants {
     public static final String VERSION_INVALID_MSG = "'version' must match: " + VERSION_REGEX + ".";
     public static final String TYPE_INVALID_MSG = "'type' must match: " + TYPE_REGEX + ".";
     public static final String DIGITAL_USER_ID_INVALID_MSG = "'digitalUserId' must match: " + ID_REGEX + ".";
+    public static final String IDS_INVALID_MSG = "'ids' must match: " + ID_LIST_REGEX + ".";
     public static final String SUB_INVALID_MSG = "'sub' must match: " + SUB_REGEX + ".";
     public static final String EXTERNAL_ID_INVALID_MSG = "'externalId' must match: " + ID_REGEX + ".";
     public static final String TENANT_ID_INVALID_MSG = "'tenantId' must match: " + TENANT_ID_REGEX + ".";
