@@ -31,7 +31,10 @@ public class Constants {
     public static final String VERSION_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,50}";
     public static final String TYPE_REGEX = "[ \\wÀ-ú\\.:,;\\-\\[\\]()]{1,30}";
     public static final String ID_REGEX = "[a-fA-F\\d\\-]{36}";
-    public static final String ID_LIST_REGEX = "[a-fA-F\\d\\-]{" + (36 * MAX_LIMIT) + "}";
+    public static final String ID_LIST_REGEX =
+            "^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})(," +
+                    "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){0," +
+                    (MAX_LIMIT-1) + "}$";
     public static final String SUB_REGEX = "^[a-zA-Z0-9_\\-\\.]+$";
     public static final String TENANT_ID_REGEX = "^[a-zA-Z0-9_\\-\\.]+$";
     public static final String FULL_NAME_REGEX = "^[A-Za-z]+(?:['-]?[A-Za-z]+)*(?: [A-Za-z]+(?:['-]?[A-Za-z]+)*)+$";

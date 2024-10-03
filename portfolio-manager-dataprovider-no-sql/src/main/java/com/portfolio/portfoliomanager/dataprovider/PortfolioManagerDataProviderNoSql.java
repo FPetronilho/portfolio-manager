@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,7 +93,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         assetCriteria.and("assets.type").is(input.getType());
 
         if (input.getIds() != null && !input.getIds().isEmpty()) {
-            assetCriteria.and("assets.externalId").in(input.getIds());
+            List<String> idsList = Arrays.asList(input.getIds().split(","));
+            assetCriteria.and("assets.externalId").in(idsList);
         }
 
         if (input.getCreatedAtGte() != null) {
