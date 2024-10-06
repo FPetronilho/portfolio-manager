@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,9 +93,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         assetCriteria.and("assets.artifactInfo.artifactId").is(input.getArtifactId());
         assetCriteria.and("assets.type").is(input.getType());
 
-        if (input.getIds() != null && !input.getIds().isEmpty()) {
-            List<String> idsList = Arrays.asList(input.getIds().split(","));
-            assetCriteria.and("assets.externalId").in(idsList);
+        if (!CollectionUtils.isEmpty(input.getExternalIds())) {
+            assetCriteria.and("assets.externalId").in(input.getExternalIds());
         }
 
         if (input.getCreatedAtGte() != null) {
@@ -112,8 +112,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
                     matches &= asset.getArtifactInfo().getArtifactId().equals(input.getArtifactId());
                     matches &= asset.getType().equals(input.getType());
 
-                    if (input.getIds() != null && !input.getIds().isEmpty()) {
-                        matches &= input.getIds().contains(asset.getExternalId());
+                    if (!CollectionUtils.isEmpty(input.getExternalIds())) {
+                        matches &= input.getExternalIds().contains(asset.getExternalId());
                     }
 
                     if (input.getCreatedAtGte() != null) {

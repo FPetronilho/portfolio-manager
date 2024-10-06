@@ -47,7 +47,7 @@ public interface AssetRestApi {
 
             @RequestParam(required = false)
                 @Pattern(regexp = Constants.ID_LIST_REGEX,
-                        message = Constants.IDS_INVALID_MSG) String ids,
+                        message = Constants.IDS_INVALID_MSG) String externalIds,
 
             @RequestParam(name = "artifactInfo.groupId")
                 @Pattern(regexp = Constants.GROUP_ID_REGEX,
