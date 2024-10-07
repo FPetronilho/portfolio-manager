@@ -126,8 +126,9 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public void deleteAsset(String assetExternalId) {
-        Query query = new Query(Criteria.where("assets.externalId").is(assetExternalId));
+    public void deleteAsset(String digitalUserId, String assetExternalId) {
+        Query query = new Query(Criteria.where("id").is(digitalUserId)
+                .and("assets.externalId").is(assetExternalId));
         boolean assetExists = mongoTemplate.exists(query, DigitalUserDocument.class);
 
         if (!assetExists) {

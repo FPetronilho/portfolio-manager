@@ -30,7 +30,7 @@ public interface PortfolioManagerDataProvider {
 
     List<Asset> listAssets(ListAssetsUseCase.Input input);
 
-    void deleteAsset(String assetExternalId);
+    void deleteAsset(String digitalUserId, String assetExternalId);
 
     boolean assetExistsByExternalId(String externalId);
 }
