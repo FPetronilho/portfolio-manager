@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,9 +93,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         assetCriteria.and("assets.artifactInfo.artifactId").is(input.getArtifactId());
         assetCriteria.and("assets.type").is(input.getType());
 
-        if (input.getIds() != null && !input.getIds().isEmpty()) {
-            List<String> idsList = Arrays.asList(input.getIds().split(","));
-            assetCriteria.and("assets.externalId").in(idsList);
+        if (!CollectionUtils.isEmpty(input.getExternalIds())) {
+            assetCriteria.and("assets.externalId").in(input.getExternalIds());
         }
 
         if (input.getCreatedAtGte() != null) {
@@ -112,8 +112,8 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
                     matches &= asset.getArtifactInfo().getArtifactId().equals(input.getArtifactId());
                     matches &= asset.getType().equals(input.getType());
 
-                    if (input.getIds() != null && !input.getIds().isEmpty()) {
-                        matches &= input.getIds().contains(asset.getExternalId());
+                    if (!CollectionUtils.isEmpty(input.getExternalIds())) {
+                        matches &= input.getExternalIds().contains(asset.getExternalId());
                     }
 
                     if (input.getCreatedAtGte() != null) {
@@ -126,8 +126,9 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public void deleteAsset(String assetExternalId) {
-        Query query = new Query(Criteria.where("assets.externalId").is(assetExternalId));
+    public void deleteAsset(String digitalUserId, String assetExternalId) {
+        Query query = new Query(Criteria.where("id").is(digitalUserId)
+                .and("assets.externalId").is(assetExternalId));
         boolean assetExists = mongoTemplate.exists(query, DigitalUserDocument.class);
 
         if (!assetExists) {
@@ -168,5 +169,22 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     public boolean assetExistsByExternalId(String externalId) {
         Query query = new Query().addCriteria(Criteria.where("assets.externalId").is(externalId));
         return mongoTemplate.exists(query, DigitalUserDocument.class);
+    }
+
+    @Override
+    public Asset findAssetByExternalId(String digitalUserId, String externalId) {
+        Query query = new Query().addCriteria(Criteria.where("id").is(digitalUserId));
+        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
+
+        digitalUserDocument = Optional.ofNullable(digitalUserDocument).orElseThrow(
+                () -> new ResourceNotFoundException(DigitalUserDocument.class, digitalUserId)
+        );
+
+        List<Asset> assets = digitalUserDocument.getAssets();
+
+        return assets.stream()
+                .filter(asset1 -> asset1.getExternalId().equals(externalId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(Asset.class, externalId));
     }
 }

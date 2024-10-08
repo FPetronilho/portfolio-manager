@@ -5,7 +5,7 @@ import com.portfolio.portfoliomanager.domain.DigitalUser;
 import com.portfolio.portfoliomanager.dto.DigitalUserCreate;
 import com.portfolio.portfoliomanager.usecases.CreateDigitalUserUseCase;
 import com.portfolio.portfoliomanager.usecases.DeleteDigitalUserUseCase;
-import com.portfolio.portfoliomanager.usecases.GetDigitalUserBySubAndIdPUseCase;
+import com.portfolio.portfoliomanager.usecases.FindDigitalUserBySubAndIdPAndTenantIdUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DigitalUserController implements DigitalUserRestApi {
 
     private final CreateDigitalUserUseCase createDigitalUserUseCase;
-    private final GetDigitalUserBySubAndIdPUseCase getDigitalUserBySubAndIdPUseCase;
+    private final FindDigitalUserBySubAndIdPAndTenantIdUseCase getDigitalUserBySubAndIdPUseCase;
     private final DeleteDigitalUserUseCase deleteDigitalUserUseCase;
 
     @Override
@@ -42,13 +42,13 @@ public class DigitalUserController implements DigitalUserRestApi {
     ) {
 
         log.info("Getting digital user by subject: {}, identity provider: {} and tenantId: {}.", sub, idP, tenantId);
-        GetDigitalUserBySubAndIdPUseCase.Input input = GetDigitalUserBySubAndIdPUseCase.Input.builder()
+        FindDigitalUserBySubAndIdPAndTenantIdUseCase.Input input = FindDigitalUserBySubAndIdPAndTenantIdUseCase.Input.builder()
                 .sub(sub)
                 .idP(idP)
                 .tenantId(tenantId)
                 .build();
 
-        GetDigitalUserBySubAndIdPUseCase.Output output = getDigitalUserBySubAndIdPUseCase.execute(input);
+        FindDigitalUserBySubAndIdPAndTenantIdUseCase.Output output = getDigitalUserBySubAndIdPUseCase.execute(input);
         return new ResponseEntity<>(output.getDigitalUser(), HttpStatus.OK);
     }
 

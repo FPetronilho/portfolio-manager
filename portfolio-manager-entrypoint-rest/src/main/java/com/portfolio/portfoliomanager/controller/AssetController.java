@@ -10,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -43,7 +45,7 @@ public class AssetController implements AssetRestApi {
             Integer offset,
             Integer limit,
             String digitalUserId,
-            String ids,
+            String externalIds,
             String groupId,
             String artifactId,
             String type,
@@ -52,11 +54,15 @@ public class AssetController implements AssetRestApi {
             LocalDateTime createdAtGte
     ) {
 
+        List<String> externalIdsList = StringUtils.hasText(externalIds)
+                ? List.of(externalIds.split(","))
+                : Collections.emptyList();
+
         ListAssetsUseCase.Input input = ListAssetsUseCase.Input.builder()
                 .offset(offset)
                 .limit(limit)
                 .digitalUserId(digitalUserId)
-                .ids(ids)
+                .externalIds(externalIdsList)
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .type(type)
@@ -71,9 +77,10 @@ public class AssetController implements AssetRestApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(String externalId) {
-        log.info("Deleting asset {}.", externalId);
+    public ResponseEntity<Void> delete(String digitalUserId, String externalId) {
+        log.info("Deleting asset: {} from digital user: {}.", digitalUserId, externalId);
         DeleteAssetUseCase.Input input = DeleteAssetUseCase.Input.builder()
+                .digitalUserId(digitalUserId)
                 .externalId(externalId)
                 .build();
 

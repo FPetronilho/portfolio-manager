@@ -1,9 +1,7 @@
 package com.portfolio.portfoliomanager.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.portfolio.portfoliomanager.exception.AuthorizationFailedException;
-import com.portfolio.portfoliomanager.exception.ConfigurationErrorException;
-import com.portfolio.portfoliomanager.exception.ExceptionDto;
+import com.portfolio.portfoliomanager.exception.*;
 import com.portfolio.portfoliomanager.mapper.ExceptionMapperEntryPointRest;
 import com.portfolio.portfoliomanager.util.AuthenticationConstants;
 import com.portfolio.portfoliomanager.util.Environment;
@@ -29,7 +27,7 @@ import java.util.stream.Stream;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Slf4j
-public class Config {
+public class SecurityConfig {
 
     private final ExceptionMapperEntryPointRest mapper;
     private final ObjectMapper jsonMapper = new ObjectMapper();

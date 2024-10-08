@@ -2,6 +2,10 @@ package com.portfolio.portfoliomanager.util;
 
 public class Constants {
 
+    public Constants() {
+        throw new IllegalStateException("Cannot instantiate a util class");
+    }
+
     // Default values
     public static final String DEFAULT_OFFSET = "0";
     public static final String DEFAULT_LIMIT = "10";
@@ -73,8 +77,4 @@ public class Constants {
     public static final String STREET_INVALID_MSG = "'street' must match: " + GENERIC_ADDRESS_REGEX + ".";
     public static final String POSTAL_CODE_INVALID_MSG = "'postalCode' must match: " + POSTAL_CODE_REGEX + ".";
     public static final String BOOLEAN_INVALID_MSG = "'preferred' must be either 'true' or 'false'.";
-
-    private Constants() {
-        throw new IllegalStateException("Cannot instantiate a Util class");
-    }
 }

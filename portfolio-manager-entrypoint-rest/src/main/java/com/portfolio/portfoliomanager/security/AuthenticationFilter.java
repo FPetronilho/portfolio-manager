@@ -5,6 +5,7 @@ import com.portfolio.portfoliomanager.exception.AuthenticationFailedException;
 import com.portfolio.portfoliomanager.exception.BusinessException;
 import com.portfolio.portfoliomanager.exception.ExceptionDto;
 import com.portfolio.portfoliomanager.mapper.ExceptionMapperEntryPointRest;
+import com.portfolio.portfoliomanager.security.context.DigitalUserSecurityContext;
 import com.portfolio.portfoliomanager.util.AuthenticationConstants;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
@@ -48,6 +49,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${auth.jwt.secret}")
     private String secret;
+    @Value("${auth.enabled:true}")
+    private boolean authEnabled;
 
     private static void setSecurityContext(
             HttpServletRequest request,
@@ -55,6 +58,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     ) throws MalformedClaimException {
 
         String subject = claims.getSubject();
+        String digitalUserId = claims.getClaimValueAsString(AuthenticationConstants.Authentication.Jwt.Claim.DIGITAL_USER_ID.getValue());
         String scopes = claims.getClaimValueAsString(AuthenticationConstants.Authentication.Jwt.Claim.SCOPE.getValue());
         List<SimpleGrantedAuthority> authorities;
 
@@ -66,8 +70,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             authorities = Collections.emptyList();
         }
 
+        DigitalUserSecurityContext digitalUserSecurityContext = DigitalUserSecurityContext.builder()
+                .id(digitalUserId)
+                .subject(subject)
+                .build();
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                subject,
+                digitalUserSecurityContext,
                 null,
                 authorities
         );
@@ -79,13 +88,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @PostConstruct
     public void init() {
-        if (!StringUtils.hasText(secret) ||
-                secret.length() != AuthenticationConstants.Authentication.Jwt.ALGORITHM_KEY_SIZE_BYTES) {
+        if (authEnabled) {
+            if (!StringUtils.hasText(secret) ||
+                    secret.length() != AuthenticationConstants.Authentication.Jwt.ALGORITHM_KEY_SIZE_BYTES) {
 
-            throw new AuthenticationFailedException("Jwt signature (HMAC) key is not properly set.");
+                throw new AuthenticationFailedException("Jwt signature (HMAC) key is not properly set.");
+            }
+
+            key = new HmacKey(secret.getBytes());
         }
-
-        key = new HmacKey(secret.getBytes());
     }
 
     @Override
@@ -94,28 +105,31 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        try {
-            String jwt = request.getHeader(AuthenticationConstants.Authentication.HTTP_HEADER_AUTHORIZATION);
+        if (authEnabled){
+            try {
+                String jwt = request.getHeader(AuthenticationConstants.Authentication.HTTP_HEADER_AUTHORIZATION);
 
-            if (!StringUtils.hasText(jwt)) {
-                throw new AuthenticationFailedException(
-                        String.format(
-                                "invalid JWT given in HTTP header %s",
-                                AuthenticationConstants.Authentication.HTTP_HEADER_AUTHORIZATION
-                        )
-                );
+                if (!StringUtils.hasText(jwt)) {
+                    throw new AuthenticationFailedException(
+                            String.format(
+                                    "invalid JWT given in HTTP header %s",
+                                    AuthenticationConstants.Authentication.HTTP_HEADER_AUTHORIZATION
+                            )
+                    );
+                }
+
+                jwt = jwt.substring(AuthenticationConstants.Authentication.Jwt.PREFIX.length());
+                JwtClaims claims = validateJwt(jwt);
+                setSecurityContext(request, claims);
+
+            } catch (BusinessException e) {
+                returnError(e, response);
+            } catch (Exception e) {
+                throw new AuthenticationFailedException(e.getMessage());
             }
-
-            jwt = jwt.substring(AuthenticationConstants.Authentication.Jwt.PREFIX.length());
-            JwtClaims claims = validateJwt(jwt);
-            setSecurityContext(request, claims);
-            filterChain.doFilter(request, response);
-
-        } catch (BusinessException e) {
-            returnError(e, response);
-        } catch (Exception e) {
-            throw new AuthenticationFailedException(e.getMessage());
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private void returnError(

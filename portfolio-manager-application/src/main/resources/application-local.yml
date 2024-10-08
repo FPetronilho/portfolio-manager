@@ -1,10 +1,14 @@
 ###################  Microservice base configuration  ###################
 spring.application.environment: local
 
-server.port: 8081
+server:
+  port: 8444
+  ssl.key-store-password: Portfolio2k24!
+
 
 ###################  MongoDB configuration  ###################
 spring.data.mongodb.uri: mongodb://localhost:27017/PortfolioManager
+
 
 ###################  Authentication and Authorization  ###################
 auth.enabled: true
