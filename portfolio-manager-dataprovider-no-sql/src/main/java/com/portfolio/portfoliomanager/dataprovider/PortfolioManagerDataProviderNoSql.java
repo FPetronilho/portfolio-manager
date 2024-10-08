@@ -170,4 +170,21 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
         Query query = new Query().addCriteria(Criteria.where("assets.externalId").is(externalId));
         return mongoTemplate.exists(query, DigitalUserDocument.class);
     }
+
+    @Override
+    public Asset findAssetByExternalId(String digitalUserId, String externalId) {
+        Query query = new Query().addCriteria(Criteria.where("id").is(digitalUserId));
+        DigitalUserDocument digitalUserDocument = mongoTemplate.findOne(query, DigitalUserDocument.class);
+
+        digitalUserDocument = Optional.ofNullable(digitalUserDocument).orElseThrow(
+                () -> new ResourceNotFoundException(DigitalUserDocument.class, digitalUserId)
+        );
+
+        List<Asset> assets = digitalUserDocument.getAssets();
+
+        return assets.stream()
+                .filter(asset1 -> asset1.getExternalId().equals(externalId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(Asset.class, externalId));
+    }
 }

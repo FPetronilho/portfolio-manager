@@ -1,25 +1,24 @@
 package com.portfolio.portfoliomanager.usecases;
 
 import com.portfolio.portfoliomanager.dataprovider.PortfolioManagerDataProvider;
-import com.portfolio.portfoliomanager.domain.DigitalUser;
+import com.portfolio.portfoliomanager.domain.Asset;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GetDigitalUserBySubAndIdPUseCase {
+public class FindAssetByExternalIdUseCase {
 
     private final PortfolioManagerDataProvider dataProvider;
 
     public Output execute(Input input) {
-        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdP(
-                input.getSub(),
-                input.getIdP(),
-                input.getTenantId()
+        Asset asset = dataProvider.findAssetByExternalId(
+                input.getDigitalUserId(),
+                input.getExternalId()
         );
 
         return Output.builder()
-                .digitalUser(digitalUser)
+                .asset(asset)
                 .build();
     }
 
@@ -28,9 +27,8 @@ public class GetDigitalUserBySubAndIdPUseCase {
     @Data
     @Builder
     public static class Input {
-        private String sub;
-        private DigitalUser.IdentityProviderInformation.IdentityProvider idP;
-        private String tenantId;
+        private String digitalUserId;
+        private String externalId;
     }
 
     @NoArgsConstructor
@@ -38,6 +36,6 @@ public class GetDigitalUserBySubAndIdPUseCase {
     @Data
     @Builder
     public static class Output {
-        private DigitalUser digitalUser;
+        private Asset asset;
     }
 }

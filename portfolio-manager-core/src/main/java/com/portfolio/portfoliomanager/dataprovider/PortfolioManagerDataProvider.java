@@ -33,4 +33,6 @@ public interface PortfolioManagerDataProvider {
     void deleteAsset(String digitalUserId, String assetExternalId);
 
     boolean assetExistsByExternalId(String externalId);
+
+    Asset findAssetByExternalId(String digitalUserId, String externalId);
 }
