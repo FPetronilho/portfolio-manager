@@ -3,8 +3,11 @@ package com.portfolio.portfoliomanager.util;
 import lombok.*;
 import org.springframework.http.HttpMethod;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthenticationConstants {
+
+    public AuthenticationConstants() {
+        throw new IllegalStateException("Cannot instantiate a util class");
+    }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Authentication {
@@ -37,7 +40,8 @@ public class AuthenticationConstants {
             @RequiredArgsConstructor
             public enum Claim {
 
-                SCOPE("scope");
+                SCOPE("scope"),
+                DIGITAL_USER_ID("digitalUserId");
 
                 private final String value;
             }

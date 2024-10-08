@@ -2,7 +2,11 @@ package com.portfolio.portfoliomanager.usecases;
 
 import com.portfolio.portfoliomanager.dataprovider.PortfolioManagerDataProvider;
 import com.portfolio.portfoliomanager.domain.Asset;
+import com.portfolio.portfoliomanager.domain.DigitalUser;
+import com.portfolio.portfoliomanager.exception.AuthenticationFailedException;
 import com.portfolio.portfoliomanager.exception.AuthorizationFailedException;
+import com.portfolio.portfoliomanager.security.context.DigitalUserSecurityContext;
+import com.portfolio.portfoliomanager.util.SecurityUtil;
 import lombok.*;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,15 @@ public class DeleteAssetUseCase {
     private final FindAssetByExternalIdUseCase findAssetByExternalIdUseCase;
 
     public void execute(Input input) {
+        // 1. Check if the user inputted in query param is the same as in the JWT.
+        DigitalUserSecurityContext digitalUserSecurityContext = SecurityUtil.getDigitalUserSecurityContext();
+        if (!digitalUserSecurityContext.getId().equals(input.getDigitalUserId())) {
+            throw new AuthenticationFailedException(
+                    "Authentication Failed: User ID does not match ID from JWT."
+            );
+        }
+
+        // 2. Check if the digital user is the owner of the asset
         Asset asset = findAssetByExternalIdUseCase.execute(
                 FindAssetByExternalIdUseCase.Input.builder()
                         .digitalUserId(input.getDigitalUserId())
@@ -31,6 +44,7 @@ public class DeleteAssetUseCase {
             );
         }
 
+        // 3. Delete the asset if everything checks out
         dataProvider.deleteAsset(input.getDigitalUserId(), input.getExternalId());
     }
 
