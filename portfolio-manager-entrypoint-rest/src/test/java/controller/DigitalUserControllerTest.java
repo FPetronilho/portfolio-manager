@@ -96,7 +96,7 @@ public class DigitalUserControllerTest {
     }
 
     @Test
-    void testDelete_shouldReturnHttpStatusNoContent(){
+    void testDelete_shouldReturnHttpStatusNoContent() {
         // Given
         String id = "test-id";
         DeleteDigitalUserUseCase.Input input = DeleteDigitalUserUseCase.Input.builder()
