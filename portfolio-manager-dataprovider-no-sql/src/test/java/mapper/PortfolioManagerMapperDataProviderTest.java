@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Collections;
 import java.util.List;
 
-public class MapperTest {
+public class PortfolioManagerMapperDataProviderTest {
 
     private PortfolioManagerMapperDataProvider mapper;
 
@@ -58,7 +58,8 @@ public class MapperTest {
         List<DigitalUser> digitalUsers = mapper.toDigitalUserList(digitalUserDocuments);
 
         // Assert
-        assertNotNull(digitalUsers);
+        assertEquals(2, digitalUsers.size());
+
         assertEquals("Test123", digitalUsers.get(0).getId());
         assertEquals(Collections.emptyList(), digitalUsers.get(0).getAssets());
         assertEquals(Collections.emptyList(), digitalUsers.get(0).getContactMediumList());

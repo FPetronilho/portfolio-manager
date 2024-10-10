@@ -39,7 +39,7 @@ public class PortfolioManagerDataProviderNoSql implements PortfolioManagerDataPr
     }
 
     @Override
-    public DigitalUser getDigitalUserBySubAndIdP(
+    public DigitalUser getDigitalUserBySubAndIdPAndTenant(
             String sub,
             DigitalUser.IdentityProviderInformation.IdentityProvider idP,
             String tenantId

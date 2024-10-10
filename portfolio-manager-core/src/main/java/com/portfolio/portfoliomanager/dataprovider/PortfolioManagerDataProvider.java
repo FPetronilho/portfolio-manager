@@ -12,7 +12,7 @@ public interface PortfolioManagerDataProvider {
 
     DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate);
 
-    DigitalUser getDigitalUserBySubAndIdP(
+    DigitalUser getDigitalUserBySubAndIdPAndTenant(
             String sub,
             DigitalUser.IdentityProviderInformation.IdentityProvider idP,
             String tenantId

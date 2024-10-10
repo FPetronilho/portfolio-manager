@@ -12,7 +12,7 @@ public class FindDigitalUserBySubAndIdPAndTenantIdUseCase {
     private final PortfolioManagerDataProvider dataProvider;
 
     public Output execute(Input input) {
-        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdP(
+        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdPAndTenant(
                 input.getSub(),
                 input.getIdP(),
                 input.getTenantId()
