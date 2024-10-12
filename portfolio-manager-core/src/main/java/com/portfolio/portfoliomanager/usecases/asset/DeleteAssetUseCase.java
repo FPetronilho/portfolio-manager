@@ -1,8 +1,7 @@
-package com.portfolio.portfoliomanager.usecases;
+package com.portfolio.portfoliomanager.usecases.asset;
 
 import com.portfolio.portfoliomanager.dataprovider.PortfolioManagerDataProvider;
 import com.portfolio.portfoliomanager.domain.Asset;
-import com.portfolio.portfoliomanager.domain.DigitalUser;
 import com.portfolio.portfoliomanager.exception.AuthenticationFailedException;
 import com.portfolio.portfoliomanager.exception.AuthorizationFailedException;
 import com.portfolio.portfoliomanager.security.context.DigitalUserSecurityContext;

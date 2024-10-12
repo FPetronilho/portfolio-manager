@@ -3,9 +3,9 @@ package controller;
 import com.portfolio.portfoliomanager.controller.AssetController;
 import com.portfolio.portfoliomanager.domain.Asset;
 import com.portfolio.portfoliomanager.dto.AssetCreate;
-import com.portfolio.portfoliomanager.usecases.CreateAssetUseCase;
-import com.portfolio.portfoliomanager.usecases.DeleteAssetUseCase;
-import com.portfolio.portfoliomanager.usecases.ListAssetsUseCase;
+import com.portfolio.portfoliomanager.usecases.asset.CreateAssetUseCase;
+import com.portfolio.portfoliomanager.usecases.asset.DeleteAssetUseCase;
+import com.portfolio.portfoliomanager.usecases.asset.ListAssetsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -78,9 +78,6 @@ public class AssetControllerTest {
         String groupId = "test-group";
         String artifactId = "test-artifact";
         String type = "test-type";
-        LocalDateTime createdAtLte = null;
-        LocalDateTime createdAt = null;
-        LocalDateTime createdAtGte = null;
 
         Asset asset = new Asset();
         List<Asset> expectedAssets = new ArrayList<>(List.of(asset));
@@ -93,9 +90,9 @@ public class AssetControllerTest {
                 .groupId(groupId)
                 .artifactId(artifactId)
                 .type(type)
-                .createdAtLte(createdAtLte)
-                .createdAt(createdAt)
-                .createdAtGte(createdAtGte)
+                .createdAtLte(null)
+                .createdAt(null)
+                .createdAtGte(null)
                 .build();
 
         ListAssetsUseCase.Output output = ListAssetsUseCase.Output.builder()

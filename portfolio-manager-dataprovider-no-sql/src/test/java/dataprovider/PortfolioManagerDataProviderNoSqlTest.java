@@ -9,7 +9,7 @@ import com.portfolio.portfoliomanager.dto.AssetCreate;
 import com.portfolio.portfoliomanager.dto.DigitalUserCreate;
 import com.portfolio.portfoliomanager.exception.ResourceNotFoundException;
 import com.portfolio.portfoliomanager.mapper.PortfolioManagerMapperDataProvider;
-import com.portfolio.portfoliomanager.usecases.ListAssetsUseCase;
+import com.portfolio.portfoliomanager.usecases.asset.ListAssetsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
