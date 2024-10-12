@@ -32,7 +32,7 @@ public class CreateDigitalUserUseCaseTest {
         // Given
         DigitalUserCreate digitalUserCreate = new DigitalUserCreate();
         digitalUserCreate.setIdPInfo(DigitalUserCreate.IdentityProviderInformation.builder()
-                .subject("test-sub")
+                .subject("test-subject")
                 .tenantId("test-tenant")
                 .identityProvider(DigitalUserCreate.IdentityProviderInformation.IdentityProvider.GOOGLE_IDENTITY_PLATFORM)
                 .build());
@@ -64,7 +64,7 @@ public class CreateDigitalUserUseCaseTest {
         //Given
         DigitalUserCreate digitalUserCreate = new DigitalUserCreate();
         digitalUserCreate.setIdPInfo(DigitalUserCreate.IdentityProviderInformation.builder()
-                .subject("test-sub")
+                .subject("test-subject")
                 .tenantId("test-tenant")
                 .identityProvider(DigitalUserCreate.IdentityProviderInformation.IdentityProvider.GOOGLE_IDENTITY_PLATFORM)
                 .build());
