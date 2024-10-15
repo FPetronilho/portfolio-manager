@@ -202,6 +202,7 @@ public class PortfolioManagerDataProviderNoSqlTest {
         assertEquals(1, result.size());
         assertTrue(result.contains(matchingAsset));
         assertFalse(result.contains(nonMatchingAsset));
+        verify(mongoTemplate).find(any(Query.class), eq(DigitalUserDocument.class));
     }
 
     @Test

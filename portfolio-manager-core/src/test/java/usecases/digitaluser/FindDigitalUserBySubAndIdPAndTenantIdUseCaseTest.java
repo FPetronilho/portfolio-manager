@@ -51,6 +51,7 @@ public class FindDigitalUserBySubAndIdPAndTenantIdUseCaseTest {
         // Then
         assertNotNull(result);
         assertEquals(expectedDigitalUser, result.getDigitalUser());
+        verify(dataProvider).getDigitalUserBySubAndIdPAndTenant(subject, idP, tenantId);
     }
 
 }
