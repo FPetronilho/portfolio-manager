@@ -1,4 +1,4 @@
-package com.portfolio.portfoliomanager.usecases;
+package com.portfolio.portfoliomanager.usecases.digitaluser;
 
 import com.portfolio.portfoliomanager.dataprovider.PortfolioManagerDataProvider;
 import com.portfolio.portfoliomanager.domain.DigitalUser;
@@ -12,7 +12,7 @@ public class FindDigitalUserBySubAndIdPAndTenantIdUseCase {
     private final PortfolioManagerDataProvider dataProvider;
 
     public Output execute(Input input) {
-        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdP(
+        DigitalUser digitalUser = dataProvider.getDigitalUserBySubAndIdPAndTenant(
                 input.getSub(),
                 input.getIdP(),
                 input.getTenantId()

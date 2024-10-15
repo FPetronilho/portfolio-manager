@@ -4,7 +4,7 @@ import com.portfolio.portfoliomanager.domain.Asset;
 import com.portfolio.portfoliomanager.domain.DigitalUser;
 import com.portfolio.portfoliomanager.dto.AssetCreate;
 import com.portfolio.portfoliomanager.dto.DigitalUserCreate;
-import com.portfolio.portfoliomanager.usecases.ListAssetsUseCase;
+import com.portfolio.portfoliomanager.usecases.asset.ListAssetsUseCase;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface PortfolioManagerDataProvider {
 
     DigitalUser createDigitalUser(DigitalUserCreate digitalUserCreate);
 
-    DigitalUser getDigitalUserBySubAndIdP(
+    DigitalUser getDigitalUserBySubAndIdPAndTenant(
             String sub,
             DigitalUser.IdentityProviderInformation.IdentityProvider idP,
             String tenantId

@@ -1,4 +1,4 @@
-package com.portfolio.portfoliomanager.usecases;
+package com.portfolio.portfoliomanager.usecases.digitaluser;
 
 import com.portfolio.portfoliomanager.dataprovider.PortfolioManagerDataProvider;
 import lombok.*;
