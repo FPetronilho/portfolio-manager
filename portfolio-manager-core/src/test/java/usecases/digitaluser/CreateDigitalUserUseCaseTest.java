@@ -57,6 +57,12 @@ public class CreateDigitalUserUseCaseTest {
         // Then
         assertNotNull(result);
         assertEquals(expectedDigitalUser, result.getDigitalUser());
+        verify(dataProvider).digitalUserExistsBySubAndIdPAndTenantId(
+                digitalUserCreate.getIdPInfo().getSubject(),
+                digitalUserCreate.getIdPInfo().getIdentityProvider(),
+                digitalUserCreate.getIdPInfo().getTenantId()
+        );
+        verify(dataProvider).createDigitalUser(digitalUserCreate);
     }
 
     @Test

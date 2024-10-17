@@ -71,6 +71,7 @@ public class ListAssetsUseCaseTest {
             // Then
             assertNotNull(result);
             assertEquals(expectedAssets, result.getAssets());
+            verify(dataProvider).listAssets(input);
         }
     }
 

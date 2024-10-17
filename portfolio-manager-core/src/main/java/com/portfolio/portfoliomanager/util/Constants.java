@@ -12,8 +12,8 @@ public class Constants {
     public static final int MIN_OFFSET = 0;
     public static final int MIN_LIMIT = 1;
     public static final int MAX_LIMIT = 100;
-    // Database
-    public static final String CREATED_AT_DB_FIELD = "createdAt";
+
+
     // Required fields validation
     public static final String USER_IDP_INFO_MANDATORY_MSG = "'idPInfo' is mandatory.";
     public static final String USER_PERSONAL_INFO_MANDATORY_MSG = "'personalInfo' is mandatory.";

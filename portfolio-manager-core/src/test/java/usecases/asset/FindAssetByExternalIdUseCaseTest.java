@@ -47,5 +47,6 @@ public class FindAssetByExternalIdUseCaseTest {
         // Then
         assertNotNull(result);
         assertEquals(expectedAsset, result.getAsset());
+        verify(dataProvider).findAssetByExternalId(digitalUserId, externalId);
     }
 }

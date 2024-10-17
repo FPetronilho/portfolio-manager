@@ -59,6 +59,8 @@ public class CreateAssetUseCaseTest {
             // Then
             assertNotNull(result);
             assertEquals(result.getAsset(), expectedAsset);
+            verify(dataProvider).assetExistsByExternalId(assetCreate.getExternalId());
+            verify(dataProvider).createAsset(assetCreate, digitalUserId);
         }
     }
 
